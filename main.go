@@ -227,10 +227,16 @@ func main() {
 			zap.String("addr", config.Addr),
 			zap.String("cert", config.TLS.Cert),
 			zap.String("key", config.TLS.Key))
-		fasthttp.ListenAndServeTLS(config.Addr, config.TLS.Cert, config.TLS.Key, dispatch)
+		err = fasthttp.ListenAndServeTLS(config.Addr, config.TLS.Cert, config.TLS.Key, dispatch)
+		if err != nil {
+			log.Fatal("ListenAndServeTLS failed", zap.Error(err))
+		}
 	} else {
 		log.Info("rest service started with http ...", zap.String("addr", config.Addr))
-		fasthttp.ListenAndServe(config.Addr, dispatch)
+		err = fasthttp.ListenAndServe(config.Addr, dispatch)
+		if err != nil {
+			log.Fatal("ListenAndServe failed", zap.Error(err))
+		}
 	}
 }
 

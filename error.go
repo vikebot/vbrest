@@ -11,6 +11,7 @@ const (
 	codeNotImplemented          = 9002
 	codeInsufficientPermission  = 9003
 	codeEndpointAssertionFailed = 9004
+	codeNoAuthProvided          = 9005
 )
 
 var (

@@ -24,6 +24,8 @@ func authproxy(req *fasthttp.RequestCtx, minPermission int, ctx *zap.Logger) (us
 		// Authentication via vbauth cookie
 	} else if t := string(req.Request.Header.Cookie("vbauth")); len(t) > 0 {
 		token = t
+	} else {
+		return 0, vbnet.NewHTTPError("No auth provided. Access forbidden", fasthttp.StatusForbidden, codeNoAuthProvided, nil)
 	}
 
 	userID, permission, err := vbjwt.VerifyCtx(token, realipFromFasthttp(req), ctx)

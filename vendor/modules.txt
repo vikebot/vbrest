@@ -14,14 +14,12 @@ github.com/harwoeck/sqle
 github.com/hashicorp/go-immutable-radix
 # github.com/hashicorp/golang-lru v0.0.0-20160813221303-0a025b7e63ad
 github.com/hashicorp/golang-lru/simplelru
-# github.com/klauspost/compress v1.2.1
+# github.com/klauspost/compress v1.4.0
 github.com/klauspost/compress/flate
 github.com/klauspost/compress/gzip
 github.com/klauspost/compress/zlib
-# github.com/klauspost/cpuid v0.0.0-20170728055534-ae7887de9fa5
+# github.com/klauspost/cpuid v0.0.0-20180405133222-e7e905edc00e
 github.com/klauspost/cpuid
-# github.com/klauspost/crc32 v0.0.0-20161016154125-cb6bfca970f6
-github.com/klauspost/crc32
 # github.com/sendgrid/rest v2.4.0+incompatible
 github.com/sendgrid/rest
 # github.com/sendgrid/sendgrid-go v3.4.1+incompatible
@@ -29,7 +27,7 @@ github.com/sendgrid/sendgrid-go
 github.com/sendgrid/sendgrid-go/helpers/mail
 # github.com/valyala/bytebufferpool v1.0.0
 github.com/valyala/bytebufferpool
-# github.com/valyala/fasthttp v0.0.0-20170912101557-5116aa64e038
+# github.com/valyala/fasthttp v1.0.0
 github.com/valyala/fasthttp
 github.com/valyala/fasthttp/fasthttputil
 github.com/valyala/fasthttp/stackless

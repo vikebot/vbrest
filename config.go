@@ -14,7 +14,9 @@ type conf struct {
 		Name string `json:"name"`
 	} `json:"db"`
 	CORS struct {
-		Wildcard bool `json:"wildcard"`
+		Enabled        bool     `json:"enabled"`
+		Wildcard       bool     `json:"wildcard"`
+		AllowedDomains []string `json:"allowed_domains"`
 	} `json:"cors"`
 	JWT struct {
 		ProductionIsssuer   bool              `json:"production_issuer"`

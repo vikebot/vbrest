@@ -78,8 +78,12 @@ func main() {
 	vbmail.Init(config.Sendgrid.Secret)
 
 	// Print CORS message
-	if config.CORS.Wildcard {
-		log.Info("cors enabled globally")
+	if config.CORS.Enabled {
+		if config.CORS.Wildcard {
+			log.Warn("cors enabled with wildcard")
+		} else {
+			log.Info("cors enabled with set of domains", zap.Strings("allowed", config.CORS.AllowedDomains))
+		}
 	}
 
 	// Fill our rt (routes-tree) -> Radix tree has better lookup-times
@@ -107,9 +111,26 @@ func main() {
 		}
 
 		// Check for environment variable to enable local development
-		if config.CORS.Wildcard {
-			c.Response.Header.Add("Access-Control-Allow-Origin", string(c.Request.Header.Peek("Origin")))
-			c.Response.Header.Add("Access-Control-Allow-Credentials", "true")
+		if config.CORS.Enabled {
+			origin := string(c.Request.Header.Peek("Origin"))
+
+			var allowed bool
+
+			// allow wildcard access
+			if config.CORS.Wildcard {
+				allowed = true
+			} else {
+				for _, domain := range config.CORS.AllowedDomains {
+					if origin == domain {
+						allowed = true
+					}
+				}
+			}
+
+			if allowed {
+				c.Response.Header.Add("Access-Control-Allow-Origin", origin)
+				c.Response.Header.Add("Access-Control-Allow-Credentials", "true")
+			}
 		}
 
 		switch v := r.(type) {
@@ -206,7 +227,8 @@ func main() {
 		// https://stackoverflow.com/a/21783145/6123704
 		method := string(c.Method())
 		if method == "OPTIONS" {
-			c.Response.Header.Add("Access-Control-Allow-Methods", "POST, GET")
+			c.Response.Header.Add("Access-Control-Allow-Credentials", "true")
+			c.Response.Header.Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 			c.Response.Header.Add("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization")
 			c.Response.Header.Add("Access-Control-Max-Age", "86400")
 			respond(c, nil, ctx)

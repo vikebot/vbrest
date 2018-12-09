@@ -12,7 +12,12 @@
         "name": "vbdb"
     },
     "cors": {
-        "wildcard": false
+        "enabled": true,
+        "wildcard": false,
+        "allowed_domains": [
+            "https://app.vikebot.com",
+            "https://watch.vikebot.com"
+        ]
     },
     "jwt": {
         "production_issuer": false,

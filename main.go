@@ -222,8 +222,16 @@ func main() {
 		respond(c, r, ctx)
 	}
 
-	log.Info("rest service started ...", zap.String("addr", config.Addr))
-	fasthttp.ListenAndServe(config.Addr, dispatch)
+	if config.TLS.Active {
+		log.Info("rest service started with https ...",
+			zap.String("addr", config.Addr),
+			zap.String("cert", config.TLS.Cert),
+			zap.String("key", config.TLS.Key))
+		fasthttp.ListenAndServeTLS(config.Addr, config.TLS.Cert, config.TLS.Key, dispatch)
+	} else {
+		log.Info("rest service started with http ...", zap.String("addr", config.Addr))
+		fasthttp.ListenAndServe(config.Addr, dispatch)
+	}
 }
 
 func realipFromFasthttp(c *fasthttp.RequestCtx) string {

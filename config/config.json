@@ -1,0 +1,28 @@
+{
+    "addr": "0.0.0.0:443",
+    "tls": {
+        "active": true,
+        "cert": "api_vikebot_com_cert.pem",
+        "key": "api_vikebot_com_key.pem"
+    },
+    "db": {
+        "addr": "host:port",
+        "user": "",
+        "pass": "",
+        "name": "vbdb"
+    },
+    "cors": {
+        "wildcard": false
+    },
+    "jwt": {
+        "production_issuer": false,
+        "default_signing_key_id": "",
+        "signing_keys": { }
+    },
+    "recaptcha": {
+        "secret": ""
+    },
+    "sendgrid": {
+        "secret": ""
+    }
+}

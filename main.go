@@ -2,7 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
+	"io/ioutil"
+	logSimple "log"
 	"net/http"
 	"os"
 	"strconv"
@@ -10,7 +13,7 @@ import (
 	"time"
 
 	"github.com/cactus/go-statsd-client/statsd"
-	"github.com/hashicorp/go-immutable-radix"
+	iradix "github.com/hashicorp/go-immutable-radix"
 	"github.com/valyala/fasthttp"
 	"github.com/vikebot/vbcore"
 	"github.com/vikebot/vbjwt"
@@ -27,22 +30,22 @@ var (
 )
 
 func main() {
-	if len(os.Args) < 8 {
-		fmt.Println("Usage: vbrest <SigningKeyId> <SigningKeySecret> <RecaptchaSecret> <DbAddr> <DbUser> <DbPass> <DbName> <SendgridSecret>")
-		os.Exit(-1)
+	configFlag := flag.String("config", "", "path to the config file")
+	flag.Parse()
+
+	// get config
+	if configFlag == nil || len(*configFlag) == 0 {
+		logSimple.Fatalln("argument '-config' is mandatory and mustn't be empty")
 	}
-
-	// get config values
-	signingKeyId := os.Args[1]
-	signingKeySecret := os.Args[2]
-	recaptchaSecret := os.Args[3]
-	dbAddr := os.Args[4]
-	dbUser := os.Args[5]
-	dbPass := os.Args[6]
-	dbName := os.Args[7]
-	sendgridSecret := os.Args[8]
-
-	var err error
+	configBuf, err := ioutil.ReadFile(*configFlag)
+	if err != nil {
+		logSimple.Fatalln(err)
+	}
+	config := &conf{}
+	err = json.Unmarshal(configBuf, config)
+	if err != nil {
+		logSimple.Fatalln(err)
+	}
 
 	// Logging server
 	priority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
@@ -65,17 +68,17 @@ func main() {
 
 	// Init our database connection
 	log.Info("init vbapi")
-	err = vbapi.Init(recaptchaSecret, dbAddr, dbUser, dbPass, dbName, log)
+	err = vbapi.Init(config.Recaptcha.Secret, config.DB.Addr, config.DB.User, config.DB.Pass, config.DB.Name, log)
 	if err != nil {
 		log.Fatal("unable to init db connection", zap.Error(err))
 	}
 
 	// Init our sendgrid client
 	log.Info("init vbmail")
-	vbmail.Init(sendgridSecret)
+	vbmail.Init(config.Sendgrid.Secret)
 
 	// Print CORS message
-	if cors, _ := os.LookupEnv("VBREST_CORS"); cors == "TRUE" {
+	if config.CORS.Wildcard {
 		log.Info("cors enabled globally")
 	}
 
@@ -95,9 +98,7 @@ func main() {
 	// Load all our signing keys used for validating the JWTs sent from
 	// clients to authenticate themselves.
 	log.Info("init vbjwt")
-	vbjwt.Init(true, signingKeyId, map[string]string{
-		signingKeyId: signingKeySecret,
-	}, log)
+	vbjwt.Init(config.JWT.ProductionIsssuer, config.JWT.DefaultSigningKeyID, config.JWT.SigningKeys, log)
 
 	respond := func(c *fasthttp.RequestCtx, r interface{}, ctx *zap.Logger) {
 		// If r == nil we where succesful so set response: ok
@@ -106,7 +107,7 @@ func main() {
 		}
 
 		// Check for environment variable to enable local development
-		if cors, _ := os.LookupEnv("VBREST_CORS"); cors == "TRUE" {
+		if config.CORS.Wildcard {
 			c.Response.Header.Add("Access-Control-Allow-Origin", string(c.Request.Header.Peek("Origin")))
 			c.Response.Header.Add("Access-Control-Allow-Credentials", "true")
 		}
@@ -221,8 +222,8 @@ func main() {
 		respond(c, r, ctx)
 	}
 
-	log.Info("rest service started ...", zap.Int("port", 8080))
-	fasthttp.ListenAndServe(":8080", dispatch)
+	log.Info("rest service started ...", zap.String("addr", config.Addr))
+	fasthttp.ListenAndServe(config.Addr, dispatch)
 }
 
 func realipFromFasthttp(c *fasthttp.RequestCtx) string {

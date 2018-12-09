@@ -14,7 +14,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v0.0.0-20170912101557-5116aa64e038
 	github.com/vikebot/vbcore v1.0.1
-	github.com/vikebot/vbdb v0.1.1
+	github.com/vikebot/vbdb v0.1.2
 	github.com/vikebot/vbjwt v0.1.0
 	github.com/vikebot/vbnet v0.1.1
 	go.uber.org/zap v1.9.1

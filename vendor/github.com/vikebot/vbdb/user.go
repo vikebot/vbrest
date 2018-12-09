@@ -213,6 +213,59 @@ func UpdateUser(newUser *vbcore.User, oldUser *vbcore.SafeUser, msg string) (suc
 	return UpdateUserCtx(newUser, oldUser, msg, defaultCtx)
 }
 
+// UsernameFromIDCtx loads the username associated with the given `userID`. Returns
+// "" (empty string) if the user isn't found.
+func UsernameFromIDCtx(userID int, ctx *zap.Logger) (username string, success bool) {
+	exists, err := s.SelectExists(
+		`SELECT username 
+		FROM user_username
+		WHERE user_id=?`,
+		[]interface{}{userID},
+		[]interface{}{&username},
+	)
+	if err != nil {
+		ctx.Error("vbdb.UsernameFromIDCtx",
+			zap.Int("user_id", userID),
+			zap.Error(err))
+		return "", false
+	}
+
+	if !exists {
+		return "", false
+	}
+
+	return username, true
+}
+
+// UsernamesFromRoundIDCtx loads the usernames associated with the given `roundID`. Returns
+// an empty slice if the roundID isn't valid.
+func UsernamesFromRoundIDCtx(roundID int, ctx *zap.Logger) (usernames map[int]string, success bool) {
+	usernames = make(map[int]string)
+
+	var userID int
+	var username string
+
+	err := s.SelectRange(
+		`SELECT user_username.user_id, user_username.username FROM user_username
+		JOIN roundentry ON roundentry.user_id=user_username.user_id
+		JOIN round r on roundentry.round_id=r.id
+		WHERE r.id=?`,
+		[]interface{}{roundID},
+		[]interface{}{&userID, &username},
+		func() {
+			usernames[userID] = username
+		})
+
+	if err != nil {
+		ctx.Error("vbdb.UsernamesFromRoundIDCtx",
+			zap.Int("round_id", roundID),
+			zap.Error(err))
+		return usernames, false
+	}
+
+	return usernames, true
+}
+
 // UserFromIDCtx loads the user associated with the given `userID`. Returns
 // `nil` if the user isn't found.
 func UserFromIDCtx(userID int, ctx *zap.Logger) (user *vbcore.SafeUser, success bool) {
@@ -305,6 +358,17 @@ func UserFromID(userID int) (user *vbcore.SafeUser, success bool) {
 	return UserFromIDCtx(userID, defaultCtx)
 }
 
+// UsernameFromID returns a username as string from an given ID
+func UsernameFromID(userID int) (username string, success bool) {
+	return UsernameFromIDCtx(userID, defaultCtx)
+}
+
+// UsernamesFromRoundID returns usernames as a slice of string from an given
+// roundID
+func UsernamesFromRoundID(roundID int) (usernames map[int]string, success bool) {
+	return UsernamesFromRoundIDCtx(roundID, defaultCtx)
+}
+
 // UserFromUsernameCtx loads the user associated with the given `username`.
 // Returns `nil` if the user isn't found.
 func UserFromUsernameCtx(username string, ctx *zap.Logger) (user *vbcore.SafeUser, success bool) {
@@ -368,19 +432,19 @@ func RegisterUserCtx(user vbcore.User, msg string, ctx *zap.Logger) (userID int,
 	inserts["INSERT INTO user_permission (user_id, msg_id) VALUES(?, ?)"] = []interface{}{userID, msgID}
 	inserts["INSERT INTO user_register (user_id, msg_id, code) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, regCode}
 	if user.Username != nil && len(*user.Username) > 0 {
-		inserts["INSERT INTO user_username (user_id, msg_id, username) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, user.Username}
+		inserts["INSERT INTO user_username (user_id, msg_id, username) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, *user.Username}
 	}
 	if user.Name != nil && len(*user.Name) > 0 {
-		inserts["INSERT INTO user_name (user_id, msg_id, name) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, user.Name}
+		inserts["INSERT INTO user_name (user_id, msg_id, name) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, *user.Name}
 	}
 	if user.Bio != nil && len(*user.Bio) > 0 {
-		inserts["INSERT INTO user_bio (user_id, msg_id, bio) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, user.Bio}
+		inserts["INSERT INTO user_bio (user_id, msg_id, bio) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, *user.Bio}
 	}
 	if user.Location != nil && len(*user.Location) > 0 {
-		inserts["INSERT INTO user_location (user_id, msg_id, location) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, user.Location}
+		inserts["INSERT INTO user_location (user_id, msg_id, location) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, *user.Location}
 	}
 	if user.Company != nil && len(*user.Company) > 0 {
-		inserts["INSERT INTO user_company (user_id, msg_id, company) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, user.Company}
+		inserts["INSERT INTO user_company (user_id, msg_id, company) VALUES(?, ?, ?)"] = []interface{}{userID, msgID, *user.Company}
 	}
 	for k, v := range inserts {
 		err = s.ExecTx(tx, k, v...)

@@ -35,7 +35,7 @@ github.com/valyala/fasthttp/fasthttputil
 github.com/valyala/fasthttp/stackless
 # github.com/vikebot/vbcore v1.0.1
 github.com/vikebot/vbcore
-# github.com/vikebot/vbdb v0.1.1
+# github.com/vikebot/vbdb v0.1.2
 github.com/vikebot/vbdb
 # github.com/vikebot/vbjwt v0.1.0
 github.com/vikebot/vbjwt

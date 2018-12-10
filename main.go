@@ -128,8 +128,8 @@ func main() {
 			}
 
 			if allowed {
-				c.Response.Header.Add("Access-Control-Allow-Origin", origin)
 				c.Response.Header.Add("Access-Control-Allow-Credentials", "true")
+				c.Response.Header.Add("Access-Control-Allow-Origin", origin)
 			}
 		}
 
@@ -227,7 +227,6 @@ func main() {
 		// https://stackoverflow.com/a/21783145/6123704
 		method := string(c.Method())
 		if method == "OPTIONS" {
-			c.Response.Header.Add("Access-Control-Allow-Credentials", "true")
 			c.Response.Header.Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
 			c.Response.Header.Add("Access-Control-Allow-Headers", "X-PINGOTHER, Content-Type, Authorization")
 			c.Response.Header.Add("Access-Control-Max-Age", "86400")

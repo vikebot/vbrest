@@ -23,7 +23,7 @@ func UserGetPublicByID(userID string, ctx *zap.Logger) (user *vbcore.SafeUser, e
 		return nil, errInternalServerError
 	}
 	if user == nil {
-		return nil, vbnet.NewHTTPError("user_id doesn't exist", http.StatusOK, codeUserIDDoesnotExist, nil)
+		return nil, vbnet.NewHTTPError("user_id doesn't exist", http.StatusNotFound, codeUserIDDoesnotExist, nil)
 	}
 
 	// Remove any sensitive data from the user

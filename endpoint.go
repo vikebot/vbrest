@@ -25,7 +25,7 @@ func allEndpoints(log *zap.Logger) []endpoint {
 	secret := strings.ToLower(base32.StdEncoding.EncodeToString(buf))
 	log.Warn("secret generated for genjwtkey",
 		zap.String("secret", secret),
-		zap.String("link", "/v0/admin/genjwtkey/" + secret + "/<DESIRED-USER-ID>"))
+		zap.String("link", "/v0/admin/genjwtkey/"+secret+"/<DESIRED-USER-ID>"))
 
 	// save it
 	genjwtsecret = secret
@@ -40,6 +40,7 @@ func allEndpoints(log *zap.Logger) []endpoint {
 		{"/v1/user/update", v1UserUpdate, true},
 		{"/v1/round/active", v1RoundActive, true},
 		{"/v1/round/join/", v1RoundJoin, false},
+		{"/v1/round/players/", v1RoundPlayers, false},
 		{"/v1/roundentry/active", v1RoundentryActive, true},
 		{"/v1/roundentry/connectinfo/", v1RoundentryConnectinfo, false},
 		{"/v1/roundentry/watchresolve/", v1RoundentryWatchresolve, false},

@@ -11,7 +11,7 @@ require (
 	github.com/sendgrid/sendgrid-go v3.4.1+incompatible
 	github.com/valyala/fasthttp v1.0.0
 	github.com/vikebot/vbcore v1.0.1
-	github.com/vikebot/vbdb v0.1.2
+	github.com/vikebot/vbdb v0.1.5
 	github.com/vikebot/vbjwt v0.1.0
 	github.com/vikebot/vbnet v0.1.1
 	go.uber.org/zap v1.9.1

@@ -116,3 +116,12 @@ func v1RegisterConfirm(req *fasthttp.RequestCtx, p string, ctx *zap.Logger) (r i
 
 	return nil, nil
 }
+
+func v1UserGetByWatchtoken(req *fasthttp.RequestCtx, p string, ctx *zap.Logger) (r interface{}, err error) {
+	user, err := vbapi.UserGetInfoByWatchtoken(p[len("/v1/watch/userinfo/"):], ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}

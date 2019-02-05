@@ -1,6 +1,7 @@
 package vbapi
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -29,6 +30,26 @@ func UserGetPublicByID(userID string, ctx *zap.Logger) (user *vbcore.SafeUser, e
 	// Remove any sensitive data from the user
 	user.MakePublic()
 
+	return user, nil
+}
+
+// UserGetInfoByWatchtoken returns a vbcore.PlayerInfo to display a player in
+// the frontend
+func UserGetInfoByWatchtoken(watchtoken string, ctx *zap.Logger) (user *vbcore.PlayerInfo, err error) {
+	var success bool
+
+	if !watchtokenValidator.MatchString(watchtoken) {
+		return nil, vbnet.NewHTTPError("Invalid watchtoken format", http.StatusBadRequest, codeInvalidWatchtokenFormat, nil)
+	}
+
+	if ctx == nil {
+		user, success = vbdb.UserFromWatchtoken(watchtoken)
+	} else {
+		user, success = vbdb.UserFromWatchtokenCtx(watchtoken, ctx)
+	}
+	if !success {
+		return nil, errors.New("Internal server error")
+	}
 	return user, nil
 }
 

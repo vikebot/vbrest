@@ -40,10 +40,11 @@ func allEndpoints(log *zap.Logger) []endpoint {
 		{"/v1/user/update", v1UserUpdate, true},
 		{"/v1/round/active", v1RoundActive, true},
 		{"/v1/round/join/", v1RoundJoin, false},
-		{"/v1/round/players/", v1RoundPlayers, false},
 		{"/v1/roundentry/active", v1RoundentryActive, true},
 		{"/v1/roundentry/connectinfo/", v1RoundentryConnectinfo, false},
 		{"/v1/roundentry/watchresolve/", v1RoundentryWatchresolve, false},
 		{"/v1/register/confirm", v1RegisterConfirm, false},
+		{"/v1/watch/userinfo/", v1UserGetByWatchtoken, false},
+		{"/v1/watch/players/", v1RoundPlayers, false},
 	}
 }

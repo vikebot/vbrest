@@ -2,8 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"strconv"
-	"strings"
 
 	"github.com/valyala/fasthttp"
 	"github.com/vikebot/vbcore"
@@ -68,14 +66,7 @@ func v1RoundJoin(req *fasthttp.RequestCtx, p string, ctx *zap.Logger) (r interfa
 }
 
 func v1RoundPlayers(req *fasthttp.RequestCtx, p string, ctx *zap.Logger) (r interface{}, err error) {
-	splited := strings.Split(p, "/")
-
-	roundID, err := strconv.Atoi(splited[len(splited)-1])
-	if err != nil {
-		return nil, err
-	}
-
-	players, err := vbapi.RoundPlayers(roundID, ctx)
+	players, err := vbapi.RoundPlayers(p[len("/v1/round/players/"):], ctx)
 	if err != nil {
 		return nil, err
 	}

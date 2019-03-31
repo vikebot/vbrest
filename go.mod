@@ -10,8 +10,8 @@ require (
 	github.com/sendgrid/rest v2.4.0+incompatible // indirect
 	github.com/sendgrid/sendgrid-go v3.4.1+incompatible
 	github.com/valyala/fasthttp v1.0.0
-	github.com/vikebot/vbcore v1.0.2-0.20190204181445-e45ab5fb74e7
-	github.com/vikebot/vbdb v0.1.6-0.20190205072757-c905efda2844
+	github.com/vikebot/vbcore v1.0.2-0.20190205090921-ebe9b3a942d5
+	github.com/vikebot/vbdb v0.1.6-0.20190205092010-ed327a4eb9de
 	github.com/vikebot/vbjwt v0.1.0
 	github.com/vikebot/vbnet v0.1.1
 	go.uber.org/zap v1.9.1

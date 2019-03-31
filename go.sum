@@ -51,6 +51,8 @@ github.com/vikebot/vbcore v1.0.2-0.20190204174756-c23f5aed9c53 h1:fB80myme/K58nH
 github.com/vikebot/vbcore v1.0.2-0.20190204174756-c23f5aed9c53/go.mod h1:mHN/XXsi+4dSRB2nuhKkjjd3I9RPdY6+jeA+gB92gQ4=
 github.com/vikebot/vbcore v1.0.2-0.20190204181445-e45ab5fb74e7 h1:ERRKzMqrE4fvpPYdOp1+pbvO943WuI7kKobSMlK3WvI=
 github.com/vikebot/vbcore v1.0.2-0.20190204181445-e45ab5fb74e7/go.mod h1:mHN/XXsi+4dSRB2nuhKkjjd3I9RPdY6+jeA+gB92gQ4=
+github.com/vikebot/vbcore v1.0.2-0.20190205090921-ebe9b3a942d5 h1:s3FzRYsNxEV6502UuQH4aRms/rc/ue6CgURjpeDAFQU=
+github.com/vikebot/vbcore v1.0.2-0.20190205090921-ebe9b3a942d5/go.mod h1:mHN/XXsi+4dSRB2nuhKkjjd3I9RPdY6+jeA+gB92gQ4=
 github.com/vikebot/vbdb v0.1.1 h1:f42gXE5gS/oc2rQfkqd2NqoFMnP/6gBsgRHlaSaT25A=
 github.com/vikebot/vbdb v0.1.1/go.mod h1:nJUUMHdSivw98P779vwylRUeXTF9LtWYUEHnZtdVUn8=
 github.com/vikebot/vbdb v0.1.2 h1:AFt5s8lsC68nJudxTmORx70+aYHuyDS5pc3J3+SB9kk=
@@ -61,6 +63,8 @@ github.com/vikebot/vbdb v0.1.6-0.20190204180215-734773e1f530 h1:Gz7QJngedckuEJve
 github.com/vikebot/vbdb v0.1.6-0.20190204180215-734773e1f530/go.mod h1:YhCMCGq5xJIWYekrWkIztJFxw5NFyI+049+qgfwEwME=
 github.com/vikebot/vbdb v0.1.6-0.20190205072757-c905efda2844 h1:czh9T3DjIsY5rhLC1cGJRd4Uis+sZXZTzjlgcGDYCtc=
 github.com/vikebot/vbdb v0.1.6-0.20190205072757-c905efda2844/go.mod h1:YhCMCGq5xJIWYekrWkIztJFxw5NFyI+049+qgfwEwME=
+github.com/vikebot/vbdb v0.1.6-0.20190205092010-ed327a4eb9de h1:u+m9ZyczLTV11I+FJWUNitNKoHLGYKFnLosA4oLhxwA=
+github.com/vikebot/vbdb v0.1.6-0.20190205092010-ed327a4eb9de/go.mod h1:/Ad+MicwtuEkX+S3MUH9DtDh5l4xz4Uyqu70O1g6CWI=
 github.com/vikebot/vbjwt v0.1.0 h1:NxRYu1ZqTBXi1I66LqYNS21scXvRkQX1XODM8RjrGsg=
 github.com/vikebot/vbjwt v0.1.0/go.mod h1:M8/RcC7YiWrC8kqAehSefwWhUunIetieLfnIRn1Rsz4=
 github.com/vikebot/vbnet v0.1.1 h1:cP0ehnRxwBz17HW5zIyRm4IiE2RXoojiqUQp518qK24=
